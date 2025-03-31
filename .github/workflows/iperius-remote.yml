@@ -3,27 +3,17 @@ name: Windows Iperius Remote
 on:
   workflow_dispatch:
 
-concurrency:
-  group: iperius-remote
-  cancel-in-progress: true
-
 jobs:
   build:
     name: Start Building...
     runs-on: windows-latest
     timeout-minutes: 9999
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Downloading & Installing Essentials
-        run: |
-          Invoke-WebRequest -Uri "https://raw.githubusercontent.com/ItsChanGat/Iperius-Windows-Github-RDP/main/down.bat" -OutFile "down.bat"
-          cmd /c down.bat
+      - name: Download & Install FreeRDP
+        run: powershell.exe -ExecutionPolicy Bypass -File install_freerdp.ps1
 
-      - name: Connect to Iperius Remote
-        run: cmd /c show.bat
-
-      - name: Time Counter
-        run: cmd /c loop.bat
+      - name: Verify FreeRDP Installation
+        run: C:\FreeRDP\wfreerdp.exe /version
