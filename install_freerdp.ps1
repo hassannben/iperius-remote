@@ -10,9 +10,13 @@ Invoke-WebRequest -Uri $freerdpUrl -OutFile $freerdpZip
 Write-Output "Extracting FreeRDP..."
 Expand-Archive -Path $freerdpZip -DestinationPath $freerdpFolder -Force
 
+# التحقق من المسار الصحيح
+$installedPath = Join-Path $freerdpFolder "freerdp\wfreerdp.exe"
+Write-Output "Installed path: $installedPath"
+
 # التحقق من التثبيت
 Write-Output "Verifying installation..."
-if (Test-Path "$freerdpFolder\wfreerdp.exe") {
+if (Test-Path $installedPath) {
     Write-Output "FreeRDP installed successfully!"
 } else {
     Write-Error "Installation failed!"
